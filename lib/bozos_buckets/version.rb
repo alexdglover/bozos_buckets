@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Top level module for BozosBuckets
 module BozosBuckets
-  VERSION = '0.0.1-rc1'
+  # Version constant
+  VERSION = '0.0.1'
 end
