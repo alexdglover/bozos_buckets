@@ -1,5 +1,7 @@
 # BozosBuckets
 
+![image](https://user-images.githubusercontent.com/1747322/133355305-081def1a-f48b-4ded-9cc9-9126a8df0601.png)
+
 BozosBuckets is a low overhead implementation of a [token bucket](https://en.wikipedia.org/wiki/Token_bucket)
 for rate limiting. BozosBuckets uses a simple abstraction of tokens and buckets
 instead of arrays or linked list, and therefore has a tiny memory footprint.
