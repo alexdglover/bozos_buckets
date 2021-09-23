@@ -16,6 +16,8 @@ Gem::Specification.new do |s|
   s.files       = Dir['lib/**/*.rb']
   # No specific version requirements, but you should be on something newer than 2 right?
   s.required_ruby_version = '>= 2.5.0'
-  s.add_development_dependency 'rspec'
+  s.add_development_dependency 'rake', '~> 12.0'
+  s.add_development_dependency 'rubocop'
+  s.add_development_dependency 'rspec', '~> 3.0'
   s.add_development_dependency 'yard'
 end
