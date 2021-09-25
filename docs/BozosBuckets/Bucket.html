@@ -120,35 +120,6 @@
       <li class="public ">
   <span class="summary_signature">
     
-      <a href="#current_token_count-instance_method" title="#current_token_count (instance method)">#<strong>current_token_count</strong>  &#x21d2; Object </a>
-    
-
-    
-  </span>
-  
-  
-  
-    
-      <span class="note title readonly">readonly</span>
-    
-    
-  
-  
-  
-  
-  
-
-  
-    <span class="summary_desc"><div class='inline'>
-<p>Returns the value of attribute current_token_count.</p>
-</div></span>
-  
-</li>
-
-    
-      <li class="public ">
-  <span class="summary_signature">
-    
       <a href="#last_refilled-instance_method" title="#last_refilled (instance method)">#<strong>last_refilled</strong>  &#x21d2; Object </a>
     
 
@@ -245,6 +216,30 @@
     </h2>
 
     <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#current_token_count-instance_method" title="#current_token_count (instance method)">#<strong>current_token_count</strong>  &#x21d2; Integer </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Returns the current count of available tokens, after refilling the bucket based on elapsed time.</p>
+</div></span>
+  
+</li>
+
       
         <li class="public ">
   <span class="summary_signature">
@@ -410,15 +405,15 @@
       <pre class="lines">
 
 
+20
 21
 22
 23
 24
-25
-26</pre>
+25</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/bozos_buckets.rb', line 21</span>
+      <pre class="code"><span class="info file"># File 'lib/bozos_buckets.rb', line 20</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='label'>initial_token_count:</span> <span class='int'>100</span><span class='comma'>,</span> <span class='label'>refill_rate:</span> <span class='int'>1</span><span class='comma'>,</span> <span class='label'>max_token_count:</span> <span class='int'>100</span><span class='rparen'>)</span>
   <span class='ivar'>@current_token_count</span> <span class='op'>=</span> <span class='id identifier rubyid_initial_token_count'>initial_token_count</span>
@@ -439,50 +434,7 @@
       
       <span id=""></span>
       <div class="method_details first">
-  <h3 class="signature first" id="current_token_count-instance_method">
-  
-    #<strong>current_token_count</strong>  &#x21d2; <tt>Object</tt>  <span class="extras">(readonly)</span>
-  
-
-  
-
-  
-</h3><div class="docstring">
-  <div class="discussion">
-    
-<p>Returns the value of attribute current_token_count.</p>
-
-
-  </div>
-</div>
-<div class="tags">
-  
-
-</div><table class="source_code">
-  <tr>
-    <td>
-      <pre class="lines">
-
-
-9
-10
-11</pre>
-    </td>
-    <td>
-      <pre class="code"><span class="info file"># File 'lib/bozos_buckets.rb', line 9</span>
-
-<span class='kw'>def</span> <span class='id identifier rubyid_current_token_count'>current_token_count</span>
-  <span class='ivar'>@current_token_count</span>
-<span class='kw'>end</span></pre>
-    </td>
-  </tr>
-</table>
-</div>
-    
-      
-      <span id=""></span>
-      <div class="method_details ">
-  <h3 class="signature " id="last_refilled-instance_method">
+  <h3 class="signature first" id="last_refilled-instance_method">
   
     #<strong>last_refilled</strong>  &#x21d2; <tt>Object</tt>  <span class="extras">(readonly)</span>
   
@@ -507,12 +459,12 @@
       <pre class="lines">
 
 
+8
 9
-10
-11</pre>
+10</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/bozos_buckets.rb', line 9</span>
+      <pre class="code"><span class="info file"># File 'lib/bozos_buckets.rb', line 8</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_last_refilled'>last_refilled</span>
   <span class='ivar'>@last_refilled</span>
@@ -550,12 +502,12 @@
       <pre class="lines">
 
 
+8
 9
-10
-11</pre>
+10</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/bozos_buckets.rb', line 9</span>
+      <pre class="code"><span class="info file"># File 'lib/bozos_buckets.rb', line 8</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_max_token_count'>max_token_count</span>
   <span class='ivar'>@max_token_count</span>
@@ -593,12 +545,12 @@
       <pre class="lines">
 
 
+8
 9
-10
-11</pre>
+10</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/bozos_buckets.rb', line 9</span>
+      <pre class="code"><span class="info file"># File 'lib/bozos_buckets.rb', line 8</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_refill_rate'>refill_rate</span>
   <span class='ivar'>@refill_rate</span>
@@ -616,7 +568,68 @@
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="refill_bucket-instance_method">
+  <h3 class="signature first" id="current_token_count-instance_method">
+  
+    #<strong>current_token_count</strong>  &#x21d2; <tt>Integer</tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Returns the current count of available tokens, after refilling the bucket based on elapsed time. This method replaces the attr_reader to prevent clients from getting a stale value by reading the attr directly without refilling the bucket first</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>the current_token_count after refilling the bucket</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+65
+66
+67
+68</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/bozos_buckets.rb', line 65</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_current_token_count'>current_token_count</span>
+  <span class='id identifier rubyid_refill_bucket'>refill_bucket</span>
+  <span class='ivar'>@current_token_count</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="refill_bucket-instance_method">
   
     #<strong>refill_bucket</strong>  &#x21d2; <tt>Integer</tt> 
   
@@ -659,17 +672,17 @@
       <pre class="lines">
 
 
+50
 51
 52
 53
 54
 55
 56
-57
-58</pre>
+57</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/bozos_buckets.rb', line 51</span>
+      <pre class="code"><span class="info file"># File 'lib/bozos_buckets.rb', line 50</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_refill_bucket'>refill_bucket</span>
   <span class='id identifier rubyid_elapsed_seconds'>elapsed_seconds</span> <span class='op'>=</span> <span class='const'>Time</span><span class='period'>.</span><span class='id identifier rubyid_now'>now</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span> <span class='op'>-</span> <span class='id identifier rubyid_last_refilled'>last_refilled</span>
@@ -696,7 +709,7 @@
 </h3><div class="docstring">
   <div class="discussion">
     
-<p>Attempt to use tokens from the bucket. If there are sufficient  tokens, @current_token_count is decremented by the `count` and method returns `true`. If there are not sufficient tokens, method returns false without changing the @current_token_count</p>
+<p>Attempt to use tokens from the bucket. If there are sufficient tokens, @current_token_count is decremented by the `count` and method returns `true`. If there are not sufficient tokens, method returns false without changing the @current_token_count</p>
 
 
   </div>
@@ -750,6 +763,7 @@
       <pre class="lines">
 
 
+34
 35
 36
 37
@@ -758,20 +772,19 @@
 40
 41
 42
-43
-44</pre>
+43</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/bozos_buckets.rb', line 35</span>
+      <pre class="code"><span class="info file"># File 'lib/bozos_buckets.rb', line 34</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_use_tokens'>use_tokens</span><span class='lparen'>(</span><span class='label'>count:</span> <span class='int'>1</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_refill_bucket'>refill_bucket</span>
 
   <span class='kw'>if</span> <span class='lparen'>(</span><span class='ivar'>@current_token_count</span> <span class='op'>-</span> <span class='id identifier rubyid_count'>count</span><span class='rparen'>)</span> <span class='op'>&gt;=</span> <span class='int'>0</span>
     <span class='ivar'>@current_token_count</span> <span class='op'>-=</span> <span class='id identifier rubyid_count'>count</span>
-    <span class='kw'>return</span> <span class='kw'>true</span>
+    <span class='kw'>true</span>
   <span class='kw'>else</span>
-    <span class='kw'>return</span> <span class='kw'>false</span>
+    <span class='kw'>false</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
     </td>
@@ -784,7 +797,7 @@
 </div>
 
       <div id="footer">
-  Generated on Tue Sep 14 20:04:10 2021 by
+  Generated on Sat Sep 25 10:08:21 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.26 (ruby-2.7.1).
 </div>

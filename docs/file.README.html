@@ -60,6 +60,8 @@
       <div id="content"><div id='filecontents'>
 <h1 id="label-BozosBuckets">BozosBuckets</h1>
 
+<p><img src="https://user-images.githubusercontent.com/1747322/133355305-081def1a-f48b-4ded-9cc9-9126a8df0601.png"></p>
+
 <p>BozosBuckets is a low overhead implementation of a <a href="https://en.wikipedia.org/wiki/Token_bucket">token bucket</a> for rate limiting. BozosBuckets uses a simple abstraction of tokens and buckets instead of arrays or linked list, and therefore has a tiny memory footprint.</p>
 
 <h2 id="label-Installation">Installation</h2>
@@ -119,6 +121,72 @@
 <span class='kw'>end</span>
 </code></pre>
 
+<h2 id="label-Benchmark">Benchmark</h2>
+
+<p>What&#39;s the runtime cost of adding bozos_buckets to your code?</p>
+
+<pre class="code ruby"><code class="ruby">[1] pry(main)&gt; require &#39;benchmark/ips&#39;
+[2] pry(main)&gt; require_relative &#39;lib/bozos_buckets&#39;
+
+[3] pry(main)&gt; inexhaustible_bucket = BozosBuckets::Bucket.new(initial_token_count: 500, refill_rate: 999999999, max_token_count: 999999999)
+
+=&gt; #&lt;BozosBuckets::Bucket:0x0000563a8dafbd38
+ @current_token_count=500,
+ @last_refilled=1632581059,
+ @max_token_count=999999999,
+ @refill_rate=999999999&gt;
+
+[4] pry(main)&gt; easily_exhaustible_bucket = BozosBuckets::Bucket.new(initial_token_count: 10, refill_rate: 0, max_token_count: 10)
+=&gt; #&lt;BozosBuckets::Bucket:0x0000563a8dab6030
+ @current_token_count=10,
+ @last_refilled=1632581077,
+ @max_token_count=10,
+ @refill_rate=0&gt;
+[5] pry(main)&gt; Benchmark.ips do |x|
+[5] pry(main)*   x.report(&quot;without bozos_buckets&quot;) { 1+1 }
+[5] pry(main)*   x.report(&quot;with bozos_buckets, no limits&quot;) { 1+1 if inexhaustible_bucket.use_tokens }
+[5] pry(main)*   x.report(&quot;with bozos_buckets, limit quickly exceeded&quot;) { 1+1 if easily_exhaustible_bucket.use_tokens }
+[5] pry(main)*   x.compare!
+[5] pry(main)* end
+Warming up --------------------------------------
+without bozos_buckets
+                         2.003M i/100ms
+with bozos_buckets, no limits
+                       109.542k i/100ms
+with bozos_buckets, limit quickly exceeded
+                       111.998k i/100ms
+Calculating -------------------------------------
+without bozos_buckets
+                         19.942M (± 1.6%) i/s -    100.138M in   5.022679s
+with bozos_buckets, no limits
+                          1.089M (± 3.2%) i/s -      5.477M in   5.034054s
+with bozos_buckets, limit quickly exceeded
+                          1.120M (± 0.7%) i/s -      5.600M in   5.001274s
+
+Comparison:
+without bozos_buckets: 19942390.0 i/s
+with bozos_buckets, limit quickly exceeded:  1119744.2 i/s - 17.81x  (± 0.00) slower
+with bozos_buckets, no limits:  1089430.5 i/s - 18.31x  (± 0.00) slower
+</code></pre>
+
+<p>TL;DR about 20x slower.</p>
+
+<p>Memory footprint is 80 bytes for each bucket instance</p>
+
+<pre class="code ruby"><code class="ruby">[1] pry(main)&gt; require &#39;objspace&#39;
+=&gt; true
+[2] pry(main)&gt; require_relative &#39;lib/bozos_buckets&#39;
+=&gt; true
+[3] pry(main)&gt; b = BozosBuckets::Bucket.new
+=&gt; #&lt;BozosBuckets::Bucket:0x000055bd62b45af8
+ @current_token_count=100,
+ @last_refilled=1632582094,
+ @max_token_count=100,
+ @refill_rate=1&gt;
+[4] pry(main)&gt; ObjectSpace.memsize_of(b)
+=&gt; 80
+</code></pre>
+
 <h2 id="label-Development">Development</h2>
 
 <p>After checking out the repo, run <code>bin/setup</code> to install dependencies. Then, run <code>rake spec</code> to run the tests. You can also run <code>bin/console</code> for an interactive prompt that will allow you to experiment.</p>
@@ -135,7 +203,7 @@
 </div></div>
 
       <div id="footer">
-  Generated on Tue Sep 14 20:04:10 2021 by
+  Generated on Sat Sep 25 10:08:21 2021 by
   <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.26 (ruby-2.7.1).
 </div>
