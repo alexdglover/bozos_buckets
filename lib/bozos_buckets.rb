@@ -3,10 +3,9 @@
 require_relative './bozos_buckets/version'
 
 module BozosBuckets
-
   # Class representing a token bucket
   class Bucket
-    attr_reader :current_token_count, :refill_rate, :max_token_count, :last_refilled
+    attr_reader :refill_rate, :max_token_count, :last_refilled
 
     # Constructs a Bucket instance
     #
@@ -25,7 +24,7 @@ module BozosBuckets
       reset_last_refilled
     end
 
-    # Attempt to use tokens from the bucket. If there are sufficient 
+    # Attempt to use tokens from the bucket. If there are sufficient
     # tokens, @current_token_count is decremented by the `count` and method
     # returns `true`. If there are not sufficient tokens, method returns
     # false without changing the @current_token_count
@@ -37,9 +36,9 @@ module BozosBuckets
 
       if (@current_token_count - count) >= 0
         @current_token_count -= count
-        return true
+        true
       else
-        return false
+        false
       end
     end
 
@@ -57,9 +56,20 @@ module BozosBuckets
       @current_token_count = [@current_token_count + tokens_to_add, max_token_count].min
     end
 
+    # Returns the current count of available tokens, after refilling the bucket
+    # based on elapsed time. This method replaces the attr_reader to prevent
+    # clients from getting a stale value by reading the attr directly without
+    # refilling the bucket first
+    #
+    # @return [Integer] the current_token_count after refilling the bucket
+    def current_token_count
+      refill_bucket
+      @current_token_count
+    end
+
     private
 
-    # Resets the last_refilled timestamp to the current time. Called by 
+    # Resets the last_refilled timestamp to the current time. Called by
     # {#refill_bucket} after calculating elapsed time
     #
     # @return [Integer] last used timestamp in Unix epoch format. Should
