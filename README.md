@@ -65,6 +65,74 @@ def do_multiple_things(things: 5)
 end
 ```
 
+## Benchmark
+
+What's the runtime cost of adding bozos_buckets to your code?
+
+```ruby
+[1] pry(main)> require 'benchmark/ips'
+[2] pry(main)> require_relative 'lib/bozos_buckets'
+
+[3] pry(main)> inexhaustible_bucket = BozosBuckets::Bucket.new(initial_token_count: 500, refill_rate: 999999999, max_token_count: 999999999)
+
+=> #<BozosBuckets::Bucket:0x0000563a8dafbd38
+ @current_token_count=500,
+ @last_refilled=1632581059,
+ @max_token_count=999999999,
+ @refill_rate=999999999>
+
+[4] pry(main)> easily_exhaustible_bucket = BozosBuckets::Bucket.new(initial_token_count: 10, refill_rate: 0, max_token_count: 10)
+=> #<BozosBuckets::Bucket:0x0000563a8dab6030
+ @current_token_count=10,
+ @last_refilled=1632581077,
+ @max_token_count=10,
+ @refill_rate=0>
+[5] pry(main)> Benchmark.ips do |x|
+[5] pry(main)*   x.report("without bozos_buckets") { 1+1 }
+[5] pry(main)*   x.report("with bozos_buckets, no limits") { 1+1 if inexhaustible_bucket.use_tokens }
+[5] pry(main)*   x.report("with bozos_buckets, limit quickly exceeded") { 1+1 if easily_exhaustible_bucket.use_tokens }
+[5] pry(main)*   x.compare!
+[5] pry(main)* end
+Warming up --------------------------------------
+without bozos_buckets
+                         2.003M i/100ms
+with bozos_buckets, no limits
+                       109.542k i/100ms
+with bozos_buckets, limit quickly exceeded
+                       111.998k i/100ms
+Calculating -------------------------------------
+without bozos_buckets
+                         19.942M (± 1.6%) i/s -    100.138M in   5.022679s
+with bozos_buckets, no limits
+                          1.089M (± 3.2%) i/s -      5.477M in   5.034054s
+with bozos_buckets, limit quickly exceeded
+                          1.120M (± 0.7%) i/s -      5.600M in   5.001274s
+
+Comparison:
+without bozos_buckets: 19942390.0 i/s
+with bozos_buckets, limit quickly exceeded:  1119744.2 i/s - 17.81x  (± 0.00) slower
+with bozos_buckets, no limits:  1089430.5 i/s - 18.31x  (± 0.00) slower
+```
+
+TL;DR about 20x slower.
+
+Memory footprint is 80 bytes for each bucket instance
+
+```ruby
+[1] pry(main)> require 'objspace'
+=> true
+[2] pry(main)> require_relative 'lib/bozos_buckets'
+=> true
+[3] pry(main)> b = BozosBuckets::Bucket.new
+=> #<BozosBuckets::Bucket:0x000055bd62b45af8
+ @current_token_count=100,
+ @last_refilled=1632582094,
+ @max_token_count=100,
+ @refill_rate=1>
+[4] pry(main)> ObjectSpace.memsize_of(b)
+=> 80
+```
+
 
 ## Development
 
